@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="beads-ui-token" content="__BEADS_UI_TOKEN__">
+  <meta name="beads-ui-repo" content="__BEADS_UI_REPO__">
+  <meta name="beads-ui-owner" content="__BEADS_UI_OWNER__">
+  <title>Beads Explorer</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/vendor/marked.min.js"></script>
+  <script src="/vendor/purify.min.js"></script>
+  <script src="/vendor/cytoscape.min.js"></script>
+  <script src="/vendor/dagre.min.js"></script>
+  <script src="/vendor/cytoscape-dagre.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/board" aria-label="Beads Explorer home"><span class="brand-mark" aria-hidden="true"></span>Beads Explorer <span class="repo-name" id="repo-name"></span></a>
+    <div class="search">
+      <label class="sr-only" for="search">Search issues</label>
+      <input id="search" type="search" placeholder="Search id, title, text, labels  ( / )" autocomplete="off">
+    </div>
+    <div class="topbar-actions">
+      <span id="freshness" class="muted small" aria-live="polite"></span>
+      <button type="button" id="refresh" class="btn ghost" title="Reload from bd (r)">Refresh</button>
+      <button type="button" id="new-issue" class="btn" title="New issue (n)">New issue</button>
+      <button type="button" id="sync" class="btn ghost" title="bd dolt push" hidden>Sync</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="rail" aria-label="Views and filters">
+      <ul class="views" id="views">
+        <li><a href="#/board" data-view="board">Board <kbd>g b</kbd></a></li>
+        <li><a href="#/list" data-view="list">List <kbd>g l</kbd></a></li>
+        <li><a href="#/graph" data-view="graph">Graph <kbd>g g</kbd></a></li>
+        <li><a href="#/epics" data-view="epics">Epics <kbd>g e</kbd></a></li>
+        <li><a href="#/insights" data-view="insights">Insights <kbd>g i</kbd></a></li>
+        <li><a href="#/memories" data-view="memories">Memories <kbd>g m</kbd></a></li>
+      </ul>
+      <section class="filters" id="filters" aria-label="Filters">
+        <h2>Status</h2>
+        <div class="chips" id="f-status"></div>
+        <h2>Priority</h2>
+        <div class="chips" id="f-priority"></div>
+        <h2>Type</h2>
+        <div class="chips" id="f-type"></div>
+        <h2><label for="f-label">Label</label></h2>
+        <select id="f-label"><option value="">Any label</option></select>
+        <h2><label for="f-parent">Under epic</label></h2>
+        <select id="f-parent"><option value="">Any</option></select>
+        <button type="button" id="clear-filters" class="btn ghost small">Clear filters</button>
+      </section>
+    </nav>
+
+    <main id="main" tabindex="-1"></main>
+
+    <aside id="drawer" class="drawer" aria-label="Issue" hidden></aside>
+  </div>
+
+  <dialog id="modal"></dialog>
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <noscript>Beads Explorer needs JavaScript.</noscript>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "beads-explorer",
+  "version": "0.1.0",
+  "description": "A local web UI for beads (bd) issues and memories: board, list, dependency graph, epics, insights, editing, and a read-only AI chat per issue.",
+  "type": "module",
+  "bin": {
+    "beads-explorer": "bin/beads-explorer.mjs"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "public",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node bin/beads-explorer.mjs",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
+  }
+}
