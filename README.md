@@ -7,22 +7,49 @@ cd any/repo/that/uses/beads
 beads-explorer
 ```
 
-It finds the nearest folder holding `.beads`, from wherever you are inside the repository, and opens it in your browser at http://127.0.0.1:4410. If that port is taken, for example because another repository is already open, it uses the next free one. Stop it with Ctrl-C.
+See [Install](#install) to set it up. It finds the nearest folder holding `.beads`, from wherever you are inside the repository, and opens it in your browser at http://127.0.0.1:4410. If that port is taken, for example because another repository is already open, it uses the next free one. Stop it with Ctrl-C.
 
 ## Install
 
-You need Node 20 or newer and `bd` on your PATH. From this folder:
+You need:
+
+- **Node.js 20 or newer:** check with `node --version`.
+- **beads:** the `bd` command on your PATH ([install beads](https://github.com/steveyegge/beads)). Check with `bd --version`.
+- **Optional, for the AI chat:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (`claude`), signed in, or an Anthropic API key.
+
+Clone the repository and link the command:
 
 ```bash
+git clone https://github.com/hibrahem/beads-explorer.git
+cd beads-explorer
 npm install
 npm link
 ```
 
-`npm link` puts the `beads-explorer` command on your PATH and points it at this folder, so later edits here take effect at once. To remove it:
+`npm link` puts `beads-explorer` on your PATH and points it at the clone, so `git pull` there updates the command. To check that it worked:
+
+```bash
+beads-explorer --version
+```
+
+To install without keeping a clone, run `npm install -g github:hibrahem/beads-explorer`. While the repository is private, git needs to be signed in to GitHub for this to work.
+
+To uninstall:
 
 ```bash
 npm unlink -g beads-explorer
 ```
+
+Use `npm uninstall -g beads-explorer` instead if you installed it with `npm install -g`.
+
+## Run
+
+```bash
+cd path/to/any/repo/that/uses/beads
+beads-explorer
+```
+
+Your browser opens on the repository's board. Leave the terminal running while you use it, and press Ctrl-C there to stop it.
 
 ## Usage
 

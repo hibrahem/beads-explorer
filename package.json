@@ -21,5 +21,18 @@
   },
   "devDependencies": {
     "vitest": "^3.2.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hibrahem/beads-explorer.git"
+  },
+  "homepage": "https://github.com/hibrahem/beads-explorer#readme",
+  "keywords": [
+    "beads",
+    "bd",
+    "issues",
+    "kanban",
+    "dependency-graph",
+    "claude"
+  ]
 }
