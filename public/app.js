@@ -52,7 +52,7 @@ function h(tag, attrs = {}, ...children) {
 // The app's own elements are looked up once, before any issue text is on the page.
 const CHROME = Object.fromEntries(['search', 'modal', 'drawer', 'sync', 'f-label', 'f-parent', 'main', 'toasts', 'f-status', 'f-priority', 'f-type', 'freshness', 'clear-filters', 'refresh', 'new-issue']
   .map((id) => [`#${id}`, document.getElementById(id)]));
-const $ = (sel) => CHROME[sel] ?? CHROME.main.querySelector(sel);
+const $ = (sel) => CHROME[sel] ?? CHROME['#main'].querySelector(sel);
 const statusEl = (s) => h('span', { class: `status st-${s}` }, STATUS_LABEL[s] ?? s);
 const prioEl = (p) => h('span', { class: `prio p${p}`, title: `Priority ${p}` }, `P${p}`);
 const idEl = (id) => h('span', { class: 'id' }, id);
