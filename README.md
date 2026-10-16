@@ -32,7 +32,7 @@ npm link
 beads-explorer --version
 ```
 
-To install without keeping a clone, run `npm install -g github:hibrahem/beads-explorer`. While the repository is private, git needs to be signed in to GitHub for this to work.
+To install without keeping a clone, run `npm install -g github:hibrahem/beads-explorer`.
 
 To uninstall:
 
