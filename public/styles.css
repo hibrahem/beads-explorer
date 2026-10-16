@@ -44,6 +44,7 @@ kbd { font-size: 10px; color: var(--muted); border: 1px solid var(--line); borde
 .btn.ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
 .btn.danger { background: transparent; color: var(--danger); border-color: var(--danger); }
 .btn.small { height: 26px; padding-inline: 8px; font-size: 12px; }
+a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .linkish { background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 

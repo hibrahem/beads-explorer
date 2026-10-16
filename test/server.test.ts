@@ -77,7 +77,9 @@ const alive = (pid: number) => { try { process.kill(pid, 0); return true; } catc
 describe('the Beads Explorer server', () => {
   it('serves the page with its token and a strict content policy, and the issues to a caller with the token', async () => {
     const res = await fetch(base + '/');
-    expect(await res.text()).toContain(TOKEN);
+    const page = await res.text();
+    expect(page).toContain(TOKEN);
+    expect(page).toContain(`<meta name="beads-ui-root" content="${dir}">`);
     expect(res.headers.get('content-security-policy')).toContain("script-src 'self'");
     expect(await (await get('/api/issues')).json()).toMatchObject({ issues: [{ id: 'tm-a' }] });
   });

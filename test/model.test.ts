@@ -13,6 +13,7 @@ import {
   isReady,
   matchesQuery,
   normalizeIssues,
+  workOnLink,
 } from '../lib/model.mjs';
 
 const NOW = new Date('2026-10-15T12:00:00Z');
@@ -166,5 +167,31 @@ describe('the AI suggestion block', () => {
     expect(extractUpdateBlock('```beads-update\n{not json}\n```')).toBeNull();
     expect(extractUpdateBlock('```beads-update\n{"status":"done"}\n```')).toBeNull();
     expect(extractUpdateBlock('no block here')).toBeNull();
+  });
+});
+
+describe('starting work on an issue in Claude Desktop', () => {
+  const params = (link: string) => new URL(link).searchParams;
+
+  it('opens a new Code session in the repository folder, with a prompt that names the issue', () => {
+    const link = workOnLink(issue('al_rasikhoon-hk0', { title: 'Fix login' }), { folder: '/Users/me/my repo' });
+    expect(link.startsWith('claude://code/new?')).toBe(true);
+    expect(params(link).get('folder')).toBe('/Users/me/my repo');
+    const prompt = params(link).get('q')!;
+    expect(prompt).toContain('Work on beads issue al_rasikhoon-hk0: Fix login');
+    for (const step of ['bd show al_rasikhoon-hk0', 'bd update al_rasikhoon-hk0 --claim', 'bd close al_rasikhoon-hk0']) expect(prompt).toContain(step);
+  });
+
+  it('asks to work through the children of an epic in dependency order', () => {
+    const prompt = params(workOnLink(issue('tm-e', { issue_type: 'epic', title: 'Billing' }), { folder: '/r', isEpic: true })).get('q')!;
+    expect(prompt).toContain('Work through beads epic tm-e: Billing');
+    expect(prompt).toContain('bd ready');
+  });
+
+  it('keeps any title text intact as one prompt, whatever characters it holds', () => {
+    const title = 'Use & and ?q=x # 100% "quoted"\nsecond line';
+    const prompt = params(workOnLink(issue('tm-a', { title }), { folder: '/r' })).get('q')!;
+    expect(prompt).toContain('Use & and ?q=x # 100% "quoted" second line');
+    expect(params(workOnLink(issue('tm-a', { title }), { folder: '/r' })).getAll('folder')).toEqual(['/r']);
   });
 });

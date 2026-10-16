@@ -1,12 +1,13 @@
 // Beads Explorer UI. Plain ES module; issue text only ever reaches the page as text nodes or sanitised Markdown.
 import {
   PRIORITIES, STATUSES, TYPES, blockersOf, buildGraph, byPriorityThenId, childrenOf, compareIds, epicProgress,
-  extractUpdateBlock, filterIssues, insights, isBlocked, isReady, normalizeIssues,
+  extractUpdateBlock, filterIssues, insights, isBlocked, isReady, normalizeIssues, workOnLink,
 } from '/model.mjs';
 
 const TOKEN = document.querySelector('meta[name="beads-ui-token"]').content;
 const REPO = document.querySelector('meta[name="beads-ui-repo"]')?.content ?? '';
 const OWNER = document.querySelector('meta[name="beads-ui-owner"]')?.content ?? '';
+const ROOT = document.querySelector('meta[name="beads-ui-root"]')?.content ?? '';
 document.getElementById('repo-name').textContent = REPO;
 if (REPO) document.title = `${REPO} · Beads Explorer`;
 const STATUS_LABEL = { open: 'Open', in_progress: 'In progress', blocked: 'Blocked', deferred: 'Deferred', pinned: 'Pinned', hooked: 'Hooked', closed: 'Closed' };
@@ -645,6 +646,7 @@ function renderDrawer() {
     h('div', { class: 'drawer-top' }, idEl(issue.id),
       h('button', { type: 'button', class: 'linkish small', onClick: () => navigator.clipboard?.writeText(issue.id).then(() => toast('Id copied'), () => {}) }, 'Copy id'),
       h('span', { class: 'spacer' }),
+      workOnButton(issue),
       h('button', { type: 'button', class: 'btn ghost small', onClick: () => { Object.assign(state.graph, { focus: issue.id }); location.hash = `#/graph/${encodeURIComponent(issue.id)}`; } }, 'Show in graph'),
       h('button', { type: 'button', class: 'btn ghost small', 'aria-label': 'Close panel', onClick: () => closeDrawer() }, '✕')),
     titleBlock(issue),
@@ -730,6 +732,15 @@ function detailsPanel(issue) {
         ? h('button', { type: 'button', class: 'btn ghost', onClick: () => setStatus(issue.id, 'open') }, 'Reopen')
         : h('button', { type: 'button', class: 'btn ghost', onClick: () => setStatus(issue.id, 'closed') }, 'Close issue'),
       h('button', { type: 'button', class: 'btn ghost', onClick: () => { state.tab = 'chat'; renderDrawer(); } }, 'Ask AI about this')));
+}
+
+/** Opens a new Claude Desktop Code session in this repository with a prompt to work on the issue (or through the epic). */
+function workOnButton(issue) {
+  if (!ROOT || issue.status === 'closed') return null;
+  const isEpic = issue.issue_type === 'epic' || childrenOf(issue.id, state.model.issues).length > 0;
+  return h('a', { class: 'btn small', href: workOnLink(issue, { folder: ROOT, isEpic }),
+    title: 'Opens a new Claude Code session in Claude Desktop with a prompt to work on this; confirm the folder and press Send there' },
+  isEpic ? 'Work on epic' : 'Work on this');
 }
 
 function labelsEditor(issue) {
