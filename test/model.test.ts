@@ -38,7 +38,8 @@ function fixture() {
 describe('the shapes bd accepts', () => {
   it('ids, memory keys and labels', () => {
     expect(isIssueId('tm-3gs.12')).toBe(true);
-    for (const bad of ['', 'tm-a; rm', '../x', '-rf', 'TM-A']) expect(isIssueId(bad)).toBe(false);
+    for (const prefixed of ['al_rasikhoon-hk0', 'beads-explorer-3gs.2']) expect(isIssueId(prefixed)).toBe(true);
+    for (const bad of ['', 'tm-a; rm', '../x', '-rf', 'TM-A', '_x-a', 'tm-', 'tm-a/b']) expect(isIssueId(bad)).toBe(false);
     expect(isMemoryKey('auth-jwt')).toBe(true);
     expect(isMemoryKey('schema_version')).toBe(false);
     expect(isLabel('phase-2')).toBe(true);

@@ -46,6 +46,7 @@ describe('the bd arguments for each action', () => {
 describe('what the server refuses', () => {
   it('ids and memory keys outside bd shapes', () => {
     expect(validateId('tm-3gs.12')).toBe('tm-3gs.12');
+    expect(validateId('al_rasikhoon-hk0')).toBe('al_rasikhoon-hk0');
     for (const bad of ['', 'tm-a; rm', '../x', '-rf', 'TM-A']) expect(() => validateId(bad)).toThrow(BadRequest);
     expect(validateIds(['tm-a', 'tm-b'])).toEqual(['tm-a', 'tm-b']);
     expect(() => validateIds([])).toThrow(BadRequest);
